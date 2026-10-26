@@ -29,7 +29,7 @@ Or drop the directory into `~/.hermes/plugins/verify-write/` and restart the gat
 No dependencies, no env vars, no tools registered — two hooks and one slash command.
 
 Check it loaded: `hermes plugins list` (look for `verify-write`), then `/verify-write`
-in any chat to print the current session ledger.
+in any chat to print the ledger (`/verify-write <session-id>` narrows it).
 
 ## What it checks
 

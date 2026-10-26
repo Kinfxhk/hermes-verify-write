@@ -31,8 +31,6 @@ VERIFIED = "verified"
 FAILED = "failed"
 UNVERIFIED = "unverified"
 
-MUTATING_TOOLS = frozenset({"write_file", "patch", "append_file", "edit_file"})
-
 _GH_WRITE = re.compile(r"\bgh\s+api\b")
 _GH_METHOD = re.compile(r"(?:-X|--method)[\s=]+(\w+)", re.IGNORECASE)
 _GH_PATH = re.compile(r"\bgh\s+api\b[^|;&]*?((?:/|repos/|orgs/|users/)\S+)")
@@ -75,6 +73,11 @@ def reset(session_id: str = "") -> None:
 def entries(session_id: str) -> list[Entry]:
     with _lock:
         return list(_ledger.get(session_id, ()))
+
+
+def snapshot() -> dict[str, list[Entry]]:
+    with _lock:
+        return {key: list(rows) for key, rows in _ledger.items() if rows}
 
 
 def _record(session_id: str, entry: Entry) -> None:

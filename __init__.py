@@ -61,11 +61,18 @@ def register(ctx) -> None:
     ctx.register_hook("pre_llm_call", _on_pre_llm_call)
 
     def _show(raw: str) -> str:
-        key = (raw or "").strip() or _FALLBACK_SESSION
-        rows = vw.entries(key)
-        if not rows:
-            return "verify-write: nothing recorded for this session"
-        return "\n".join([f"verify-write: {len(rows)} tracked action(s)", *[e.line() for e in rows]])
+        """`/verify-write` has no session id, so it prints the whole ledger unless one is given."""
+        key = (raw or "").strip()
+        ledger = {key: vw.entries(key)} if key else vw.snapshot()
+        ledger = {k: v for k, v in ledger.items() if v}
+        if not ledger:
+            return "verify-write: nothing recorded yet this process"
+        total = sum(len(rows) for rows in ledger.values())
+        out = [f"verify-write: {total} tracked action(s) in {len(ledger)} session(s)"]
+        for session, rows in sorted(ledger.items()):
+            out.append(f"[{session}]")
+            out.extend(e.line() for e in rows)
+        return "\n".join(out)
 
     try:
         ctx.register_command("verify-write", _show, description="Show the verify-write ledger for this session")
