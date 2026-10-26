@@ -1,0 +1,8 @@
+name: verify-write
+version: 1.0.0
+description: "Make silent no-op writes visible. Verifies mutations (file writes, gh api writes, curl PUT/POST, adb install) right after they run and puts any failure in front of the model on its next turn instead of trusting exit code 0."
+author: "Kinfxhk"
+license: MIT
+provides_hooks:
+  - post_tool_call
+  - pre_llm_call
