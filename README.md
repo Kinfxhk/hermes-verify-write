@@ -1,5 +1,8 @@
 # verify-write
 
+
+**[☕ Buy Me a Coffee](https://buymeacoffee.com/kinfxhk)** · [GitHub Sponsors](https://github.com/sponsors/Kinfxhk)
+
 **A Hermes Agent plugin that makes silent no-op writes visible.**
 
 An agent tool returning success is not the same as the external system having changed.
